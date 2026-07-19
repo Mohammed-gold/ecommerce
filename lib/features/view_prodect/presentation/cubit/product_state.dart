@@ -1,4 +1,4 @@
-import 'package:ecom/fetcher/view_prodect/domin/entities/productEnitity.dart';
+import 'package:ecom/features/view_prodect/domin/entities/productEnitity.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProductState extends Equatable {}
@@ -9,8 +9,7 @@ class ProductLoading extends ProductState {
 }
 
 class ProductLoaded extends ProductState {
-  // ignore: non_constant_identifier_names
-  List<Productenitity?>? Product;
+  final List<Productenitity?>? Product;
 
   ProductLoaded({required this.Product});
   @override
