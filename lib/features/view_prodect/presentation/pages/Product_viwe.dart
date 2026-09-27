@@ -1,15 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecom/core/const/url.dart';
+import 'package:ecom/features/view_prodect/presentation/pages/product_ditails.dart';
 import 'package:ecom/features/view_prodect/presentation/cubit/catogry_cubit.dart';
 import 'package:ecom/features/view_prodect/presentation/cubit/catogry_state.dart';
 import 'package:ecom/features/view_prodect/presentation/cubit/discount_cubit.dart';
 import 'package:ecom/features/view_prodect/presentation/cubit/discount_state.dart';
 import 'package:ecom/features/view_prodect/presentation/cubit/product_cubit.dart';
 import 'package:ecom/features/view_prodect/presentation/cubit/product_state.dart';
+import 'package:ecom/features/view_prodect/presentation/widgets/appbar.dart';
+import 'package:ecom/features/view_prodect/presentation/widgets/bottom_Navigation_appbar.dart';
+import 'package:ecom/features/view_prodect/presentation/widgets/category.dart';
 import 'package:ecom/features/view_prodect/presentation/widgets/headtitle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -33,62 +36,9 @@ class _ProductViweState extends State<ProductViwe> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.red,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: d!,
-        onTap: (value) {
-          setState(() {
-            d = value;
-          });
-        },
-
-        items: [
-          BottomNavigationBarItem(
-            label: "Home",
-            icon: Icon(Icons.home_outlined),
-          ),
-          BottomNavigationBarItem(
-            label: "Category",
-            icon: Icon(Icons.category_outlined),
-          ),
-          BottomNavigationBarItem(
-            label: "ggg",
-            icon: Icon(Icons.shopping_cart_outlined),
-          ),
-          BottomNavigationBarItem(
-            label: "ggg",
-            icon: Icon(Icons.person_2_outlined),
-          ),
-        ],
-      ),
+      bottomNavigationBar: BottomNavigationAppbarv(),
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        toolbarHeight: 80,
-        flexibleSpace: FlexibleSpaceBar(title: SizedBox(height: 20)),
-        animateColor: true,
-        backgroundColor: Colors.white,
-        // centerTitle: true,
-        title: SizedBox(
-          height: MediaQuery.sizeOf(context).height / 17,
-          width: MediaQuery.sizeOf(context).width,
-          child: FloatingActionButton(
-            backgroundColor: Colors.grey[200],
-
-            isExtended: true,
-            onPressed: () {},
-            child: Row(
-              children: [
-                SizedBox(width: 15),
-                Icon(Icons.search, color: Colors.grey),
-                SizedBox(width: 5),
-                Text("Search in here", style: TextStyle(color: Colors.grey)),
-              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: Appbarv(context),
 
       body: CustomScrollView(
         slivers: [
@@ -98,9 +48,11 @@ class _ProductViweState extends State<ProductViwe> {
               builder: (context, state) {
                 if (state is Discountloaded) {
                   return SizedBox(
-                    height: 200,
+                    height: 170,
                     child: CarouselSlider.builder(
                       options: CarouselOptions(
+                        pauseAutoPlayOnManualNavigate: true,
+
                         autoPlay: true,
                         // aspectRatio: 0.2,
                         viewportFraction: 1,
@@ -143,13 +95,13 @@ class _ProductViweState extends State<ProductViwe> {
                                         .toString(),
                               ),
 
-                              Text(
-                                " 50% off",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 50,
-                                ),
-                              ),
+                              // Text(
+                              //   " 50% off",
+                              //   style: TextStyle(
+                              //     color: Colors.white,
+                              //     fontSize: 50,
+                              //   ),
+                              // ),
                             ],
                           ),
                         );
@@ -163,56 +115,14 @@ class _ProductViweState extends State<ProductViwe> {
               },
             ),
           ),
-          SliverToBoxAdapter(child: Headtitel(head: "Cateogry ")),
-          SliverToBoxAdapter(child: SizedBox(height: 15)),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
+          SliverToBoxAdapter(child: Headtitel(head: "Cateogrys ")),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
           BlocBuilder<CatogryCubit, CatogryState>(
             builder: (context, state) {
               if (state is CatogryLoaded) {
                 return SliverToBoxAdapter(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    height: 200,
-                    width: MediaQuery.sizeOf(context).width / 2,
-                    child: GridView.builder(
-                      scrollDirection: Axis.horizontal,
-
-                      itemCount: state.catogry!.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 6,
-                        crossAxisSpacing: 6,
-                        childAspectRatio: 0.5,
-                        crossAxisCount: 2,
-                      ),
-                      itemBuilder: (context, index) => Stack(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 8),
-                            width: MediaQuery.sizeOf(context).width / 1.7,
-                            height: MediaQuery.sizeOf(context).width / 2,
-                            child: ClipRRect(
-                              borderRadius: BorderRadiusGeometry.circular(10),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.fill,
-                                imageUrl:
-                                    "${ProductUrl.imgurl + state.catogry![index]!.img}",
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 22,
-                            top: 6,
-                            child: Text(
-                              "${state.catogry![index]!.name}",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: Categoryv(state: state, t: true),
                 );
               } else if (state is CatogryError) {
                 return SliverToBoxAdapter(
@@ -225,49 +135,118 @@ class _ProductViweState extends State<ProductViwe> {
             },
           ),
 
-          SliverToBoxAdapter(child: SizedBox(height: 15)),
-          SliverToBoxAdapter(child: Headtitel(head: "All Product")),
+          // SliverToBoxAdapter(child: SizedBox(height: 5)),
+          SliverToBoxAdapter(child: Headtitel(head: "All Products")),
+          SliverToBoxAdapter(child: SizedBox(height: 14)),
 
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
               if (state is ProductLoaded) {
-                return SliverToBoxAdapter(
-                  child: MasonryGridView.builder(
-                    padding: EdgeInsetsGeometry.all(20),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                    itemCount: state.Product?.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: (index / 2) == 0
-                          ? EdgeInsets.only(top: 60)
-                          : EdgeInsets.all(0),
-                      child: Column(
-                        children: [
-                          Card(
-                            child: CachedNetworkImage(
-                              height: MediaQuery.sizeOf(context).height / 3.8,
-                              width: 200,
-                              fit: BoxFit.fill,
-                              imageUrl:
-                                  ProductUrl.imgurl +
-                                  state.Product![index]!.productImg.toString(),
+                return SliverGrid.builder(
+                  // padding: EdgeInsetsGeometry.all(20),
+                  // shrinkWrap: true,
+                  // physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.7,
+                    crossAxisCount: 2,
+                  ),
+                  // SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                  // crossAxisCount: 2,
+                  // ),
+                  itemCount: state.Product?.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProductDitails(
+                              id: state.Product![index]!.id,
+                              title: state.Product![index]!.productName,
+                              img: state.Product![index]!.productImg,
+                              colors: state.Product![index]!.color,
+                              size: state.Product![index]!.size,
+                              descrption:
+                                  state.Product![index]!.productDescribtion,
+                              price: state.Product![index]!.price,
+                              reviw: state.Product![index]!.reveiw,
+                              cateogryId: state.Product![index]!.catId,
                             ),
                           ),
-                          //  SizedBox(height: 10),
-                          ListTile(
-                            title: Text(
-                              "${state.Product![index]!.productName}",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                        );
+                      },
+                      child: Card(
+                        borderOnForeground: true,
+                        //margin: EdgeInsets.all(value),
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                              child: CachedNetworkImage(
+                                height: MediaQuery.sizeOf(context).height / 5,
 
-                            subtitle: Text("\$ ${state.Product![index]!.id}"),
-                          ),
-                          SizedBox(height: 40),
-                        ],
+                                width: MediaQuery.sizeOf(context).width / 2,
+                                fit: BoxFit.fill,
+                                imageUrl:
+                                    ProductUrl.imgurl +
+                                    state.Product![index]!.productImg![0]
+                                        .toString(),
+                              ),
+                            ),
+                            //  SizedBox(height: 10),
+                            ListTile(
+                              contentPadding: EdgeInsetsDirectional.all(10),
+
+                              title: Text(
+                                "${state.Product![index]!.productName}",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+
+                              subtitle: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "\$ ${state.Product![index]!.price} .00",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  //  SizedBox(width: 8),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          state.Product![index]!.reveiw! < 3.5
+                                          ? Colors.orange
+                                          : Color.fromARGB(85, 76, 175, 79),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.star, size: 13),
+                                        Text(
+                                          "${state.Product![index]!.reveiw}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -278,6 +257,7 @@ class _ProductViweState extends State<ProductViwe> {
               );
             },
           ),
+          SliverToBoxAdapter(child: SizedBox(height: 70)),
         ],
       ),
     );

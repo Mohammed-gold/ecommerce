@@ -25,7 +25,12 @@ class ProductRepositories implements ProductRepositoyInterface {
             id: e.id,
             productDescribtion: e.productDescribtion,
             productImg: e.productImg,
+            price: e.price,
+            reveiw: e.reveiw,
+            color: e.colors,
+            size: e.size,
             productName: e.productName,
+            catId: e.catogreId,
           ),
         )
         .toList();
@@ -53,6 +58,27 @@ class ProductRepositories implements ProductRepositoyInterface {
             discountImag: e.discountImag,
             id: e.id,
             itemId: e.itemId,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  Future<List<Productenitity?>?> getdeitals(String id, String name) async {
+    var deitals = await product.getdeitals(id, name);
+    return deitals!
+        .map(
+          (e) => Productenitity(
+            createdAt: e.createdAt,
+            id: e.id,
+            price: e.price,
+            productDescribtion: e.productDescribtion,
+            productImg: e.productImg,
+            productName: e.productName,
+            reveiw: e.reveiw,
+            color: e.colors,
+            size: e.size,
+            catId: e.catogreId,
           ),
         )
         .toList();

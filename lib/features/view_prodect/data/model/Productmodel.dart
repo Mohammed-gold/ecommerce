@@ -2,8 +2,13 @@ class Home {
   int? id;
   String? productName;
   String? productDescribtion;
-  String? productImg;
+  List<String>? productImg;
   String? createdAt;
+  int? catogreId;
+  double? reveiw;
+  int? price;
+  List<String>? colors;
+  List<String>? size;
 
   Home({
     this.id,
@@ -11,14 +16,24 @@ class Home {
     this.productDescribtion,
     this.productImg,
     this.createdAt,
+    this.catogreId,
+    this.reveiw,
+    this.price,
+    this.colors,
+    this.size,
   });
 
   Home.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     productName = json['product_name'];
     productDescribtion = json['product_describtion'];
-    productImg = json['product_img'];
+    productImg = json['product_img'].cast<String>();
     createdAt = json['created_at'];
+    catogreId = json['catogre_id'];
+    reveiw = json['reveiw'];
+    price = json['price'];
+    colors = json['colors'].cast<String>();
+    size = json['Size'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +43,11 @@ class Home {
     data['product_describtion'] = this.productDescribtion;
     data['product_img'] = this.productImg;
     data['created_at'] = this.createdAt;
+    data['catogre_id'] = this.catogreId;
+    data['reveiw'] = this.reveiw;
+    data['price'] = this.price;
+    data['colors'] = this.colors;
+    data['Size'] = this.size;
     return data;
   }
 }

@@ -27,7 +27,43 @@ class GetAllproduct {
   }
 
   Future<List<Home>?> getProduct() async {
-    Response response = await dio.get(ProductUrl.data);
+    try {
+      Response response = await dio.get(ProductUrl.data);
+      // print(response);
+
+      List<Home> Items = [];
+      if (response.statusCode == 200) {
+        var d = response.data;
+        d.forEach((e) => Items.add(Home.fromJson(e)));
+        return Items;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+
+    // return null;
+  }
+
+  Future<List<Home>?> getdeitals(String id, String name) async {
+    late Response response;
+    if (id.isEmpty) {
+      response = await dio.get(
+        "${ProductUrl.Deitals}",
+        queryParameters: {
+          'product_name': 'ilike.*$name*',
+          //  'catogre_id': "eq.$id",
+        },
+      );
+    } else if (name.isEmpty) {
+      response = await dio.get(
+        "${ProductUrl.Deitals}",
+        queryParameters: {
+          // 'product_name': 'ilike.*$name*',
+          'catogre_id': "eq.$id",
+        },
+      );
+    }
     // print(response);
 
     List<Home> Items = [];

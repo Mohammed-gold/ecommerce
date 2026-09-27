@@ -18,4 +18,9 @@ abstract class ProductRepositoyInterface {
     var g = await productRepositories.getentity();
     return g;
   }
+
+  Future<List<Productenitity?>?> getdeitals(String id, String name) async {
+    var g = await productRepositories.getdeitals(id, name);
+    return g;
+  }
 }

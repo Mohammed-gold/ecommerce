@@ -7,7 +7,9 @@ class Getproductusecase {
       ProductRepositories();
   Getproductusecase();
   Future<List<Productenitity?>?> getproduct() async {
-    print("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm$productRepositoyInterface");
+    print(
+      "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm${productRepositoyInterface.getentity()}",
+    );
     return await productRepositoyInterface.getentity();
   }
 }

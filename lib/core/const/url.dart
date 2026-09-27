@@ -7,4 +7,9 @@ class ProductUrl {
       "https://lxxjhxibpktdbffsgxgf.supabase.co/rest/v1/ecommerce_data";
   static const String imgurl =
       "https://lxxjhxibpktdbffsgxgf.supabase.co/storage/v1/object/public/item_img/";
+  static const String Deitals =
+      "https://lxxjhxibpktdbffsgxgf.supabase.co/rest/v1/ecommerce_data";
+
+  static const String cart =
+      "https://lxxjhxibpktdbffsgxgf.supabase.co/rest/v1/carts";
 }
